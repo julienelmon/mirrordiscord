@@ -1,0 +1,68 @@
+{
+  "content": [
+    {
+      "name": "sdfsdfsdfsdf",
+      "age": "sdfsdfsdfsd",
+      "channels": {
+        "0": "connard",
+        "itemChannels1": "test",
+        "itemChannels2": "test"
+      },
+      "id": "6435acc06ef8195344b37074"
+    },
+    {
+      "name": "eeaqsd",
+      "age": "98",
+      "channels": "5615156486456123156486456,4864315648647864515648645",
+      "id": "6437f01da0837791c169f684"
+    },
+    {
+      "jsonNewEntry": {
+        "id": "6443d918a9d7c51170706cf5",
+        "name": "test3@test.com",
+        "channels": "",
+        "age": 0
+      },
+      "id": "Bj-4VAx"
+    },
+    {
+      "id": "6443db5da9d7c51170706cf8",
+      "name": "",
+      "channels": "",
+      "age": 0
+    },
+    {
+      "name": "Julien Elmon",
+      "age": "452",
+      "channels": "test,test,test",
+      "id": "6443e08ca9d7c51170706cfc"
+    },
+    {
+      "name": "eeaqsd",
+      "age": "89",
+      "channels": {
+        "0": "test",
+        "1": "connard",
+        "2": "645564447564654534156486",
+        "itemChannels": "pute"
+      },
+      "id": "6443e183a9d7c51170706cff"
+    },
+    {
+      "name": "victoire",
+      "age": "7884545",
+      "channels": {},
+      "id": "6444003aa9d7c51170706d04"
+    },
+    {
+      "name": "",
+      "age": 0,
+      "channels": {
+        "itemChannels0": "",
+        "itemChannels1": "",
+        "itemChannels2": ""
+      },
+      "id": "644513219531606ee56c80b2"
+    }
+  ]
+}
