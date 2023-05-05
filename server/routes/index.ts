@@ -2,10 +2,10 @@ import { Router } from "express";
 import express, {Request, Response} from 'express';
 import { UserModel, User } from '../model/User';
 import jwt from 'jsonwebtoken';
-import fs, {readFileSync} from 'fs';
+import fs from 'fs';
 import CircularJSON from 'circular-json'
-import { resolve } from "path";
 import bcrypt from 'bcrypt';
+
 const router = Router();
 
 // Authentification //
@@ -60,6 +60,8 @@ router.put('/changeEmail/:id', async (req: Request, res: Response) => {
     const updateEmail = await UserModel.findByIdAndUpdate(req.params.id, req.body, {new: true});
     res.json(updateEmail)
 })
+
+
 
 // Admin
 

@@ -8,7 +8,7 @@
                 <ul class="space-y-4 text-gray-500 list-disc list-inside dark:text-gray-400">
                     <li>
                         <ol v-for="(user, index) in filteredUsers" :key="index" v-show="showComponent1" class="pl-5 mt-2 space-y-1 list-decimal list-inside">
-                            <p v-show="showComponent1">{{ user.email }}</p><button @click="userDelete(user._id)" v-show="showComponent1"><span class="glyphicon" v-show="showComponent1">&#xe020;</span></button>
+                            <p v-show="showComponent1" v-html="sanitize(user.email)"></p><button @click="userDelete(user._id)" v-show="showComponent1"><span class="glyphicon" v-show="showComponent1">&#xe020;</span></button>
                         </ol>
                     </li>
                 </ul>
@@ -21,6 +21,8 @@ import { defineComponent } from 'vue';
 import { getUsers, deleteUser } from '../services/UserService';
 import { User } from '../../server/model/User';
 import UserSearch from './TheSearchUser.vue';
+import DOMPurify from "dompurify";
+import axios from "axios";
 
 export default defineComponent ({
     data() {
@@ -47,6 +49,7 @@ export default defineComponent ({
             if(confirmed){
                 if(typeof id === "string") {
                     const res = await deleteUser(id);
+                    const deleteJSON = await axios.delete(`http://localhost:3000/content/${id}`);
                     location.replace("/admin");
                 }
             } else {
@@ -63,7 +66,10 @@ export default defineComponent ({
             this.filteredUsers = this.users.filter(user => 
             user.email.toLowerCase().includes(lowerCaseSearchTerm),
             );
-        }
+        },
+        sanitize(value: string) {
+            return DOMPurify.sanitize(value)
+        },
     },
     mounted() {
         this.loadUser();

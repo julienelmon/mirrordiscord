@@ -36,6 +36,7 @@
 import { defineComponent } from "vue";
 import { login } from "@/services/UserService";
 import { User } from "../../server/model/User";
+import DOMPurify from "isomorphic-dompurify";
 
 export default defineComponent({
   data() {
@@ -48,6 +49,8 @@ export default defineComponent({
       try {
         console.log(document.getElementById('password'));
         console.log(document.getElementById('confirmPassword'));
+        this.user.email = DOMPurify.sanitize(this.user.email);
+        this.user.password = DOMPurify.sanitize(this.user.password);
         const res = await login(this.user);
         localStorage.setItem("token", JSON.stringify(res));
         localStorage.setItem("userId", JSON.stringify(res.data.user._id));
@@ -59,6 +62,11 @@ export default defineComponent({
       }
 
     },
+  },
+  filters: {
+    sanitizeInput: function (value: string) {
+      return DOMPurify.sanitize(value);
+    }
   },
   components: {},
   name: "TheLogin",

@@ -1,12 +1,12 @@
 <template>
   
   <div class="p-4">
-    <h1 class="mb-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-6xl">Modifier votre JSON</h1>
+    <h1 className="block text-gray-600">Modifier votre JSON</h1>
     <form>
       <label class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-teal-600 bg-teal-200 uppercase last:mr-0 mr-1">Nom : </label><div class="mb-4"><input id="name" v-model="itemName" className="border shadow-inner py-2 px-3 text-gray-700 w-full focus:shadow-outline" /></div>
       <label class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-teal-600 bg-teal-200 uppercase last:mr-0 mr-1">Age : </label><div class="mb-4"><input id="age" v-model="itemAge" className="border shadow-inner py-2 px-3 text-gray-700 w-full focus:shadow-outline" /></div>
 
-      <h1 class="mb-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-6xl>Modifier les channels">Channels Discord</h1>
+      <h1 className="block text-gray-600">Channels Discord</h1>
       <div v-for="(value, key) in itemChannels" :key="key">
         <div class="mb-4">
           <pre>{{ key }}</pre>
@@ -41,6 +41,8 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import axios from "axios";
+import DOMPurify from "dompurify";
+import config from '../../config.json'
 
 export default defineComponent({
   name: "TheModifyJSON",
@@ -60,14 +62,15 @@ export default defineComponent({
     async updateData($event: any) {
       const userId = localStorage.getItem("userId");
       let newStr = userId?.substring(1, userId.length - 1);
+      const apiUrlJSON = config.API_URL_JSON;
       if (this.itemName || this.itemAge || this.itemChannels) {
-        const res = await axios.put(`http://localhost:3000/content/${newStr}`, {
+        const res = await axios.put(apiUrlJSON + newStr, {
           name: this.itemName,
           age: this.itemAge,
           channels: this.itemChannels,
         });
       } else {
-        const res = await axios.put(`http://localhost:3000/content/${newStr}`, {
+        const res = await axios.put(apiUrlJSON + newStr, {
           name: this.lastName,
           age: this.lastNumber,
           channels: this.lastChannels,
@@ -77,7 +80,8 @@ export default defineComponent({
     createUserJson() {
       const userId = localStorage.getItem("userId");
       let newStr = userId?.substring(1, userId.length - 1);
-      axios.post("http://localhost:3000/content", {
+      const apiUrlGenJSON = config.API_URL_GENERATOR_JSON;
+      axios.post(apiUrlGenJSON, {
         id: newStr,
         name: "",
         channels: "",
@@ -94,11 +98,17 @@ export default defineComponent({
     deleteKeyValuePair(key: any): void {
       delete this.itemChannels[key];
     },
+    async sanitizeInput(itemName: string | Node ) {
+      if(this.itemName instanceof Node){
+        return DOMPurify.sanitize(this.itemName.textContent || '');
+      }
+    }
   },
   async mounted() {
     const userId = localStorage.getItem("userId");
     let newStr = userId?.substring(1, userId.length - 1);
-    const res = await axios.get(`http://localhost:3000/content/${newStr}`);
+    const apiUrlJSON = config.API_URL_JSON;
+    const res = await axios.get(apiUrlJSON + newStr);
     this.items = res.data;
     this.itemName = res.data.name;
     this.itemAge = res.data.age;

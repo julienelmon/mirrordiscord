@@ -23,6 +23,7 @@
 import { defineComponent } from 'vue';
 import { register } from '@/services/UserService';
 import { User } from '../../server/model/User';
+import DOMPurify from 'dompurify';
 
 export default defineComponent({
     data() {
@@ -34,7 +35,10 @@ export default defineComponent({
         async saveAccount($event: any) {
             const password = document.getElementById('password') as HTMLInputElement;
             const confirmPassword = document.getElementById('confirmPassword') as HTMLInputElement;
-            if(password.value === confirmPassword.value) {
+            
+            if(DOMPurify.sanitize(password.value) === DOMPurify.sanitize(confirmPassword.value)) {
+                this.user.email = DOMPurify.sanitize(this.user.email);
+                this.user.password = DOMPurify.sanitize(this.user.password);
                 const res = await register(this.user);
                 location.replace('/login');    
             } else {
